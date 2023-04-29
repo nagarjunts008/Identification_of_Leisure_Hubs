@@ -1,0 +1,15 @@
+Project 1: Identification of leisure hubs from geo-tagged social media posts
+
+Location planners working for,
+e.g. a pub or cinema chains regularly need to identify and quantify new store opportunities based on existing leisure activity (“hub effect”). 
+
+based on data from location-enabled social media platforms such as Twitter. --> Done
+
+In this context, you will build a set of scored leisure hub polygons for the UK,
+The methodology should draw from the fields of Natural Language Processing, Information Retrieval and Computational Geometry. 
+
+
+Overview 
+
+The outcome of this project is a website that shows the population density in a locality and can suggest a location for the franchise at which a new venue can be set up. It is achieved by accumulating data under the geotags of pubs for example in the area of Greenwich, London beginning from the year 2020 using techniques Twitter and Instagram APIs.Then, it undergoes a cleaning process where missing values and incorrect inputs are handled. Later, the cleaned data is sent for analysis. Analysis can be achieved via Data Visualisation techniques using the python libraries such as matplotlib and seaborn. Using these intermediate results, which consist of the geolocation, the time, and the date, a new model is developed and trained. 
+Based on the density of the population and the frequency of the location appearing on social media posts, the model can help franchisees to select an optimized location to establish their businesses. Placing the Stores, Branches, or any other contact places at the most suitable locations will help the business strive. Hence, as location planners, the motive is to obtain the optimal location for a company by identifying its needs and objectives and searching for locations with offerings that are compatible with these needs and objectives. 

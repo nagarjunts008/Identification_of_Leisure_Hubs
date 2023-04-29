@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/index.css" />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>Leisure Hub</title>
+  </head>
+  <body style="background-color: rgb(29, 29, 29)">
+    <br /><br />
+
+    <h2
+      style="
+        text-align: center;
+        color: rgb(231, 231, 231);
+        font-family: Comic Sans MS;
+        font-style: italic;
+      "
+    >
+      New Store Opportunities based on existing leisure activity
+    </h2>
+
+    <br /><br />
+
+    <div class="container">
+      <div style="margin: auto; width: 50%; padding: 10px">
+        <div style="width: 250px; margin: auto; width: 50%; padding: 10px">
+          <!-- <form method="post"> -->
+          <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+              <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+                style="color: white;">Choose a City:</label
+              ><br />
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                name="city"
+                id="city"
+              >
+                <option value="North East">North East</option>
+                <option value="North West">North West</option>
+                <option value="Yorkshire and The Humber">
+                  Yorkshire and The Humber
+                </option>
+                <!-- <option value="East Midlands">East Midlands</option> -->
+                <option value="West Midlands">West Midlands</option>
+                <option value="East of England">East of England</option>
+                <option value="London">London</option>
+                <!-- <option value="South East">South East</option> -->
+                <!-- <option value="South West">South West</option> -->
+                <option value="Wales">Wales</option>
+              </select>
+            </div>
+            <br />
+            <div class="col-auto my-1">
+              <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect"
+              style="color: white;">Choose a Leisure Hub:</label
+              ><br />
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                name="leisurehub"
+                id="leisurehub"
+              >
+                <option value="Coffee">Coffee Shop</option>
+                <option value="Pub">Pub</option>
+                <!-- <option value="Theatre">Theatre</option> -->
+              </select>
+            </div>
+            <br />
+            <div class="col-auto my-1" style="padding-left: 10px">
+              <button type="submit" class="btn btn-primary" id="show">
+                Submit
+              </button>
+            </div>
+          </div>
+          <!-- </form> -->
+        </div>
+      </div>
+
+      <br />
+      <br />
+    </div>
+    
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Identification of leisure hubs from Twitter
+              </h5>
+            </div>
+          </div>
+          <br />
+          <div
+            id="geotagmap"
+            style="width: 100%; height: 500px; border-radius: 10px !important"
+          ></div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Text field from all the tweets</h5>
+            </div>
+          </div>
+          <br />
+          <div class="card container" style="overflow-y: auto; height: 450px">
+            <div class="card-body">
+              <p class="card-text" id="onetweet"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br /><br />
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Count of total response</h5>
+            </div>
+          </div>
+          <br />
+          <canvas
+            id="totalrespfromsocialmedia"
+            style="width: 100%; max-width: 600px"
+          ></canvas>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Compounded value of sentimental analysis
+              </h5>
+            </div>
+          </div>
+          <br />
+          <canvas
+            id="sentimentanalysiscompoundval"
+            style="width: 100%; max-width: 600px"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+
+    <br /><br />
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Density per sq.km</h5>
+            </div>
+          </div>
+          <br />
+          <canvas
+            id="areadensity"
+            style="width: 100%; max-width: 600px"
+          ></canvas>
+        </div>
+        
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Predicted score</h5>
+            </div>
+          </div>
+          <br />
+          <canvas
+            id="predictedlocationpossibility"
+            style="width: 100%; max-width: 600px"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+
+    <br /><br />
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Grouping by K-Means Clustering</h5>
+            </div>
+            <div class="card-text" style="margin: 20px;">
+              <h6>Recommended Group 1</h6>
+              <p class="card-text" id="groupone"></p><br/>
+              <h6>Recommended Group 2</h6>
+              <p class="card-text" id="grouptwo"></p><br/>
+              <h6>Recommended Group 3</h6>
+              <p class="card-text" id="groupthree"></p><br/>
+            </div>
+          </div>
+          <br />
+          <canvas
+            id="areadensity"
+            style="width: 100%; max-width: 600px"
+          ></canvas>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"> Population Density for London</h5>
+              <iframe src="https://www.google.com/maps/d/u/0/embed?mid=10wXpcC8vCYusGhuo5NIP9wB8snYcCdg&ehbc=2E312F" width="640" height="480"></iframe>
+            </div>
+          </div>
+          <br />
+        </div>
+      </div>
+    </div>
+    <br /><br />
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module">
+      ////////////////////////////////////////////////////////////////// Start ////////////////////////////////////////////////////////
+      import "https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js";
+
+      let btn = document.querySelector("#show");
+
+      btn.addEventListener("click", async function () {
+        console.log("Flask API Called");
+
+        var formData = new FormData();
+
+        formData.append("city", document.getElementById("city").value);
+        formData.append(
+          "leisurehub",
+          document.getElementById("leisurehub").value
+        );
+
+        const customHeader = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+
+        let url = `http://localhost:5000/getnewlocation`;
+        // let good = await axios.post(url, formData, customHeader);
+
+        const mapbox_token =
+          "pk.eyJ1IjoibW9oYW5nYW5lc2giLCJhIjoiY2tncWp5eWdrMnY3YjJ6dGUxMXlhcXF5aCJ9.NqVkIkuE3rRsVF2bydo2rA";
+        mapboxgl.accessToken = mapbox_token;
+
+        var map = new mapboxgl.Map({
+          container: "geotagmap",
+          // style: "mapbox://styles/mapbox/dark-v10",
+          style: "mapbox://styles/mapbox/streets-v11",
+          // style: "mapbox://styles/mapbox/satellite-v9",
+          zoom: 4.5,
+          center: [-4, 55],
+        });
+
+        const getColorFromCount = (count) => {
+          if (count <= 75) {
+            return "red";
+          } else if (count <= 50) {
+            return "blue";
+          } else if (count <= 25) {
+            return "green";
+          } else {
+            return "rgb(52, 52, 52)";
+          }
+        };
+
+        var body = {
+          city: "London",
+          leisurehub: "Coffee",
+        };
+
+        let fetchRes = await axios.post(url, formData, customHeader);
+        let data = fetchRes.data;
+
+        const df_city = JSON.parse(data.df_city);
+        const df_all_tweets = JSON.parse(data.df_all_tweets);
+        const df_all_geo_tweets = JSON.parse(data.df_all_geo_tweets);
+        const df_geoloc_density = JSON.parse(data.df_geoloc_density);
+        const df_grouping_k_means = JSON.parse(data.df_grouping_k_means);
+
+        // console.log("totalresp:",data.totalresp);
+        // console.log("df_city:",df_city);
+        // console.log("df_all_tweets:", df_all_tweets);
+        // console.log("df_all_geo_tweets:",df_all_geo_tweets);
+        // console.log("df_geoloc_density:", df_geoloc_density);
+
+        ////////////////////////////////////////////////////////////////// Display all tweets //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Object.values(df_all_tweets["text"]).forEach((val) => {
+          document.getElementById("onetweet").innerHTML += "<p>" + val + "</p>";
+        });
+
+        ////////////////////////////////////////////////////////////////// Display all tweets //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Object.values(df_grouping_k_means["group1"]).forEach((val) => {
+          if(val != null){
+            document.getElementById("groupone").innerHTML += "<p>" + val + "</p>";
+          }
+        });
+
+        Object.values(df_grouping_k_means["group2"]).forEach((val) => {
+          if(val != null){
+            document.getElementById("grouptwo").innerHTML += "<p>" + val + "</p>";
+          }
+        });
+
+        Object.values(df_grouping_k_means["group3"]).forEach((val) => {
+          if(val != null){
+            document.getElementById("groupthree").innerHTML += "<p>" + val + "</p>";
+          }
+        });
+
+        ////////////////////////////////////////////////////////////////// Identification of leisure hubs from geo-tagged social media posts (Map) ////////////////////////////////////////////////////////
+
+        let count = 1;
+
+        Object.values(df_geoloc_density["Total Tweets"]).forEach((val) => {
+          console.log(val);
+          count = val;
+        });
+
+        Object.values(df_geoloc_density["geo.bbox"]).forEach((val) => {
+          const southWest = new mapboxgl.LngLat(val[0], val[1]);
+          const northEast = new mapboxgl.LngLat(val[2], val[3]);
+          const boundingBox = new mapboxgl.LngLatBounds(southWest, northEast);
+
+          new mapboxgl.Marker({
+            color: getColorFromCount(count),
+          })
+            .setLngLat([
+              boundingBox.getCenter()["lng"],
+              boundingBox.getCenter()["lat"],
+            ])
+            .addTo(map);
+        });
+
+        ////////////////////////////////////////////////////////////////// Population (Map) ////////////////////////////////////////////////////////
+        let pcount = 1;
+
+        Object.values(df_city["Density per sq km"]).forEach((val) => {
+          pcount = val;
+        });
+
+        Object.values(df_geoloc_density["geo.bbox"]).forEach((val) => {
+          const southWest = new mapboxgl.LngLat(val[0], val[1]);
+          const northEast = new mapboxgl.LngLat(val[2], val[3]);
+          const boundingBox = new mapboxgl.LngLatBounds(southWest, northEast);
+
+          new mapboxgl.Marker({
+            color: getColorFromCount(pcount),
+          })
+            .setLngLat([
+              boundingBox.getCenter()["lng"],
+              boundingBox.getCenter()["lat"],
+            ])
+            .addTo(map);
+        });
+
+        ////////////////////////////////////////////////////// Bar Chat Area Density //////////////////////////////////////////////////////////////
+
+        var xValues = [];
+        var yValues = [];
+
+        Object.values(df_city["Area"]).forEach((val) => {
+          xValues.push(val);
+        });
+
+        Object.values(df_city["Density per sq km"]).forEach((val) => {
+          yValues.push(val);
+        });
+
+        new Chart("areadensity", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [
+              {
+                data: yValues,
+                backgroundColor: "rgba(75, 192, 192, 0.8)",
+                borderColor: "rgb(75, 192, 192)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "City-Area Density per km",
+            },
+          },
+        });
+
+        ////////////////////////////////////////////////////// Bar Chat Total Respone From Social Media //////////////////////////////////////////////////////////////
+
+        var xValues = [];
+        var yValues = [];
+
+        Object.values(df_city["Area"]).forEach((val) => {
+          xValues.push(val);
+        });
+
+        Object.values(df_city["Total Respone"]).forEach((val) => {
+          yValues.push(val);
+        });
+
+        new Chart("totalrespfromsocialmedia", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [
+              {
+                data: yValues,
+                backgroundColor: "rgba(255, 99, 132, 0.8)",
+                borderColor: "rgb(255, 99, 132)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "Total Respone From Social Media",
+            },
+          },
+        });
+
+        ////////////////////////////////////////////////////// Bar Chat Sentiment Analysis Compound Val //////////////////////////////////////////////////////////////
+
+        var xValues = [];
+        var yValues = [];
+
+        // console.log(df_city);
+        // console.log(df_city["Sentiment Analysis Compound Val"]);
+
+        Object.values(df_city["Area"]).forEach((val) => {
+          xValues.push(val);
+        });
+
+        Object.values(df_city["Sentiment Analysis Compound Val"]).forEach(
+          (val) => {
+            yValues.push(val);
+          }
+        );
+
+        // console.log(xValues, yValues);
+
+        new Chart("sentimentanalysiscompoundval", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [
+              {
+                data: yValues,
+                backgroundColor: "rgba(99, 132, 255, 0.8)",
+                borderColor: "rgb(99, 132, 255)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            indexAxis: "x",
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "Total Respone From Social Media",
+            },
+          },
+        });
+
+        ////////////////////////////////////////////////////// Bar Chat Predicted Location Possibility //////////////////////////////////////////////////////////////
+
+        var xValues = [];
+        var yValues = [];
+
+        Object.values(df_city["Area"]).forEach((val) => {
+          xValues.push(val);
+        });
+
+        Object.values(df_city["Predicted Location Possibility Sacle"]).forEach(
+          (val) => {
+            yValues.push(val);
+          }
+        );
+
+        new Chart("predictedlocationpossibility", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [
+              {
+                data: yValues,
+                backgroundColor: "rgba(120, 192, 192, 0.8)",
+                borderColor: "rgb(120, 192, 192)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "Predicted Scores",
+            },
+          },
+        });
+
+        /////////////// END
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
